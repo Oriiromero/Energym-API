@@ -11,6 +11,25 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
+    public function classes()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+    public function booking()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
     /**
      * The attributes that are mass assignable.
      *
