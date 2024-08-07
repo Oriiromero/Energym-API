@@ -15,8 +15,9 @@ return new class extends Migration
         {
             $table->id();
             $table->string('name');
-            $table->date('speciality');
+            $table->string('speciality');
             $table->date('availability');
+            $table->timestamps();
 
         });
     }

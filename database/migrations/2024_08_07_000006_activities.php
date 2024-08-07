@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('activities', function(Blueprint $table)
         {
             $table->id();
-            $table->unsignedBigInteger('tainer_id')->nullable();
+            $table->unsignedBigInteger('trainer_id')->nullable();
             $table->string('name');
-            $table->date('description');
+            $table->text('description');
             $table->date('schedule');
-            $table->string('capacity');
+            $table->integer('capacity');
+            $table->timestamps();
 
             $table->foreign('trainer_id')->references('id')->on('trainers')->onDelete('cascade');
         });
