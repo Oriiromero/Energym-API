@@ -26,9 +26,9 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class);
     }
 
-    public function payment()
+    public function payments()
     {
-        return $this->hasOne(Payment::class);
+        return $this->hasMany(Payment::class);
     }
     /**
      * The attributes that are mass assignable.

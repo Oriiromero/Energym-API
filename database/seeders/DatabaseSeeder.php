@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             TrainerSeeder::class,
-            PaymentSeeder::class,
             SubscriptionSeeder::class,
+            PaymentSeeder::class,
             AuditLogSeeder::class,
             ActivitySeeder::class,
             BookingSeeder::class,

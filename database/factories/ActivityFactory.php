@@ -21,7 +21,7 @@ class ActivityFactory extends Factory
             'name' => fake()->name(),
             'description' => $this->faker->text,
             'schedule' => $this->faker->dateTime(),
-            'capacity' => $this->faker->randomNumber(),
+            'capacity' => $this->faker->randomNumber(2, true),
             'trainer_id' => Trainer::inRandomOrder()->first()->id,
         ];
     }

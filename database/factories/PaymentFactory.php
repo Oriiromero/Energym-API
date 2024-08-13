@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +20,8 @@ class PaymentFactory extends Factory
     {
         return [
             'member_id' => User::inRandomOrder()->first()->id,
-            'amount' => $this->faker->randomElement([23, 47, 68]),
+            'subscription_id' => Subscription::inRandomOrder()->first()->id,
+            'amount' => $this->faker->randomElement([23, 47, 168]),
             'payment_method' => $this->faker->creditCardType(),
             'payment_status' => $this->faker->randomElement(['completed', 'cancelled', 'pending'])
         ];

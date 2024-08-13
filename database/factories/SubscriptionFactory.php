@@ -18,7 +18,7 @@ class SubscriptionFactory extends Factory
     public function definition(): array
     {
         return [
-            'price' => $this->faker->randomElement([23, 47, 68]),
+            'price' => $this->faker->randomElement([23, 47, 168]),
             'name' => $this->faker->randomElement(['Basic', 'Plus', 'My big goal!']),
             'member_id' => User::inRandomOrder()->first()->id,
             'sub_type' => $this->faker->randomElement(['month', 'year']),
