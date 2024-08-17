@@ -9,3 +9,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('trainers', [TrainerController::class, 'index']);
+Route::post('trainers', [TrainerController::class, 'store']);

@@ -9,6 +9,10 @@ class Trainer extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name', 'speciality', 'availability'
+    ];
+
     public function activity()
     {
         return $this->hasMany(Activity::class);
