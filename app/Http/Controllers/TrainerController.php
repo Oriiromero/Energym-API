@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Filters\TrainersFilter;
 use App\Http\Requests\StoreTrainerRequest;
+use App\Http\Requests\UpdateTrainerRequest;
 use App\Http\Resources\TrainerCollection;
 use App\Http\Resources\TrainerResource;
 use App\Models\Trainer;
+use Exception;
 use Illuminate\Http\Request;
 
 class TrainerController extends Controller
@@ -27,18 +29,30 @@ class TrainerController extends Controller
 
         return new TrainerResource($trainer);
 
+    }
+
+    public function show(Trainer $trainer) {
+
+        return new TrainerResource($trainer);
+
+    }
+
+    public function update(UpdateTrainerRequest $request, Trainer $trainer) {
+
+        $trainer->update($request->all());
+
+    }
     
-    }
+    public function destroy(Trainer $trainer) {
+        try 
+        {
+            $trainer->delete();
 
-    public function show() {
-
-    }
-
-    public function update() {
-
-    }
-    
-    public function destroy() {
-
+            return response()->json(['message' => 'Trainer deleted successfully'], 200);
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['message' => 'Failed to delete trainer.', 'details' => $e->getMessage()], 500);
+        }
     }
 }
