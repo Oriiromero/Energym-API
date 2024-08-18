@@ -11,7 +11,7 @@ class UpdateActivityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,37 @@ class UpdateActivityRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+
+        if($method == 'PUT')
+        {
+            return [
+                'trainerId' => ['required'],
+                'name' => ['required'],
+                'description' => ['required'],
+                'schedule' => ['required'],
+                'capacity' => ['required']
+            ];
+        }
+        else
+        {
+            return [
+                'trainerId' => ['sometimes', 'required'],
+                'name' => ['sometimes', 'required'],
+                'description' => ['sometimes', 'required'],
+                'schedule' => ['sometimes', 'required'],
+                'capacity' => ['sometimes', 'required']
+            ];
+        }
+    }
+
+    protected function prepareForValidation()
+    {
+        if($this->trainerId)
+        {
+            $this->merge([
+                'trainer_id' => $this-> trainerId,
+            ]);
+        }
     }
 }

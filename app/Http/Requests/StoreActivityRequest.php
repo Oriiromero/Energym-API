@@ -11,7 +11,7 @@ class StoreActivityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,21 @@ class StoreActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'trainerId' => ['required', 'exists:trainers,id'],
+            'name' => ['required', 'string', 'max:100'],
+            'description' => ['required', 'string', 'max:200'],
+            'schedule' => ['required', 'date'],
+            'capacity' => ['required', 'numeric']
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        if($this->trainerId)
+        {
+            $this->merge([
+                'trainer_id' => $this-> trainerId,
+            ]);
+        }
     }
 }
