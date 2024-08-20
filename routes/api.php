@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TrainerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,4 +32,11 @@ Route::patch('bookings/{booking}', [BookingController::class, 'update']);
 Route::delete('bookings/{booking}', [BookingController::class, 'destroy']);
 
 //Payments
+Route::get('payments', [PaymentController::class, 'index']);
+Route::get('payments/{payment}', [PaymentController::class, 'show']);
+Route::post('payments', [PaymentController::class, 'store']);
+Route::put('payments/{payment}', [PaymentController::class, 'update']);
+Route::patch('payments/{payment}', [PaymentController::class, 'update']);
+Route::delete('payments/{payment}', [PaymentController::class, 'destroy']);
+
 //Subscriptions

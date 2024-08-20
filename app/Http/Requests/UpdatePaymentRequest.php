@@ -21,8 +21,57 @@ class UpdatePaymentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+
+        if($method == 'PUT')
+        {
+            return [
+                'memberId' => ['required'],
+                'subscriptionId' => ['required'],
+                'paymentMethod' => ['required'],
+                'paymentStatus' => ['required'],
+            ];
+        }
+        else 
+        {
+            return [
+                'memberId' => ['sometimes', 'required'],
+                'subscriptionId' => ['sometimes', 'required'],
+                'paymentMethod' => ['sometimes', 'required'],
+                'paymentStatus' => ['sometimes', 'required'],
+            ];
+        }
+       
+    }
+
+    protected function prepareForValidation() 
+    {
+        if($this->memberId)
+        {
+            $this->merge([
+                'member_id' => $this->memberId,
+            ]);
+        }
+
+        if($this->subscriptionId)
+        {
+            $this->merge([
+                'subscription_id' => $this->subscriptionId,
+            ]);
+        }
+
+        if($this->paymentMethod)
+        {
+            $this->merge([
+                'payment_method' => $this->paymentMethod,
+            ]);
+        }
+
+        if($this->paymentStatus)
+        {
+            $this->merge([
+                'payment_status' => $this->paymentStatus,
+            ]);
+        }
     }
 }

@@ -22,7 +22,41 @@ class StorePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'memberId' => ['required', 'exists:users,id'],
+            'subscriptionId' => ['required', 'exists:subscriptions,id'],
+            'paymentMethod' => ['required', 'string', 'max:100'],
+            'paymentStatus' => ['required', 'string', 'max:100'],
         ];
+    }
+
+    protected function prepareForValidation() 
+    {
+        if($this->memberId)
+        {
+            $this->merge([
+                'member_id' => $this->memberId,
+            ]);
+        }
+
+        if($this->subscriptionId)
+        {
+            $this->merge([
+                'subscription_id' => $this->subscriptionId,
+            ]);
+        }
+
+        if($this->paymentMethod)
+        {
+            $this->merge([
+                'payment_method' => $this->paymentMethod,
+            ]);
+        }
+
+        if($this->paymentStatus)
+        {
+            $this->merge([
+                'payment_status' => $this->paymentStatus,
+            ]);
+        }
     }
 }
