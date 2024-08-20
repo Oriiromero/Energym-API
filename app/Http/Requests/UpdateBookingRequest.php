@@ -11,7 +11,7 @@ class UpdateBookingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,47 @@ class UpdateBookingRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+
+       if($method == 'PUT')
+        {
+            return [
+                'activityId' => ['required'],
+                'memberId' => ['required'],
+                'bookingDate' => ['required'],
+                'status' => ['required']
+            ];
+        }
+       else 
+        {
+            return [
+                'activityId' => ['sometimes', 'required'],
+                'memberId' => ['sometimes', 'required'],
+                'bookingDate' => ['sometimes', 'required'],
+                'status' => ['sometimes', 'required']
+            ];
+        }
+    }
+
+    protected function prepareForValidation()
+    {
+        if($this->activityId)
+        {
+            $this->merge([
+                'activity_id' => $this-> activityId,
+            ]);
+        }
+        if($this->memberId)
+        {
+            $this->merge([
+                'member_id' => $this-> memberId,
+            ]);
+        }
+        if($this->bookingDate)
+        {
+            $this->merge([
+                'booking_date' => $this-> bookingDate,
+            ]);
+        }
     }
 }

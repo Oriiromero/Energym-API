@@ -9,9 +9,13 @@ class Booking extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'activity_id', 'member_id', 'booking_date', 'status'
+    ];
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'member_id');
     }
 
     public function activity()
