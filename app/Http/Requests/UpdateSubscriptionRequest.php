@@ -21,8 +21,62 @@ class UpdateSubscriptionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+
+        if($method == 'PUT')
+        {
+            return [
+                'name' => ['required'],
+                'memberId' => ['required'],
+                'subType' => ['required'],
+                'startDate' => ['required'],
+                'endDate' => ['required'],
+                'status' => ['required'],
+                'price' => ['required']
+            ];
+        }
+        else 
+        {
+            return [
+                'name' => ['sometimes', 'required'],
+                'memberId' => ['sometimes','required'],
+                'subType' => ['sometimes','required'],
+                'startDate' => ['sometimes','required'],
+                'endDate' => ['sometimes','required'],
+                'status' => ['sometimes','required'],
+                'price' => ['sometimes','required']
+            ];
+        }
+    }
+
+    protected function prepareForValidation() 
+    {
+        if($this->memberId)
+        {
+            $this->merge([
+                'member_id' => $this->memberId,
+            ]);
+        }
+
+        if($this->subType)
+        {
+            $this->merge([
+                'sub_type' => $this->subType,
+            ]);
+        }
+
+        if($this->startDate)
+        {
+            $this->merge([
+                'start_date' => $this->startDate,
+            ]);
+        }
+
+        if($this->endDate)
+        {
+            $this->merge([
+                'end_date' => $this->endDate,
+            ]);
+        }
     }
 }

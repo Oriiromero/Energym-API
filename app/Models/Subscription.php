@@ -9,9 +9,13 @@ class Subscription extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name', 'member_id', 'sub_type', 'start_date', 'end_date', 'status', 'price'
+    ];
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'member_id');
     }
 
     public function payments()

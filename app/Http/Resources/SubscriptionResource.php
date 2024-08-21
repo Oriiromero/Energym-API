@@ -14,6 +14,16 @@ class SubscriptionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'memberId' => $this->member_id,
+            'subType' => $this->sub_type,
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+            'status' => $this->status,
+            'price' => $this->price,
+            'memberInfo' => new UserResource($this->whenLoaded('user'))
+        ];
     }
 }
