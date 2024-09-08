@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -96,4 +97,6 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::put('subscriptions/{subscription}', [SubscriptionController::class, 'update']);
     Route::patch('subscriptions/{subscription}', [SubscriptionController::class, 'update']);
     Route::delete('subscriptions/{subscription}', [SubscriptionController::class, 'destroy']);
+    //AudtiLogs
+    Route::get('auditlogs', [AuditLogController::class, 'index']);
 });
