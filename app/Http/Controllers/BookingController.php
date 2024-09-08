@@ -8,11 +8,20 @@ use App\Http\Requests\UpdateBookingRequest;
 use App\Http\Resources\BookingCollection;
 use App\Http\Resources\BookingResource;
 use App\Models\Booking;
+use App\Services\AuditLogService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
+    public $auditLogService;
+
+    public function __construct(AuditLogService $auditLogService)
+    {
+        $this->auditLogService = $auditLogService;
+    }
+
     public function index(Request $request) 
     {
         $filter = new BookingFilter();
@@ -25,7 +34,11 @@ class BookingController extends Controller
 
     public function store(StoreBookingRequest $request) 
     {
+        $user = Auth::user();
+
         $booking = Booking::create($request->all());
+
+        $this->auditLogService->storeAction('store', 'bookings', $booking->id, $user->id);
 
         return new BookingResource($booking);
     }
@@ -37,6 +50,10 @@ class BookingController extends Controller
 
     public function update(UpdateBookingRequest $request, Booking $booking) 
     {
+        $user = Auth::user();
+
+        $this->auditLogService->storeAction('update', 'bookings', $booking->id, $user->id);
+
         $booking->update($request->all());
     }
 
@@ -44,7 +61,11 @@ class BookingController extends Controller
     {
         try 
         {
+            $user = Auth::user();
+
             $booking->delete();
+
+            $this->auditLogService->storeAction('delete', 'bookings', $booking->id, $user->id);
 
             return response()->json(['message' => 'Booking deleted successfully'], 200);
         }

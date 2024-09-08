@@ -8,14 +8,19 @@ use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Http\Resources\SubscriptionCollection;
 use App\Http\Resources\SubscriptionResource;
 use App\Models\Subscription;
+use App\Services\AuditLogService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public $auditLogService;
+
+    public function __construct(AuditLogService $auditLogService)
+    {
+        $this->auditLogService = $auditLogService;
+    }
     public function index(Request $request)
     {
         $filter = new SubscriptionFilter();
@@ -35,7 +40,11 @@ class SubscriptionController extends Controller
 
     public function store(StoreSubscriptionRequest $request)
     {
+        $user = Auth::user();
+
         $subscription = Subscription::create($request->all());
+
+        $this->auditLogService->storeAction('store', 'subscriptions', $subscription->id, $user->id);
 
         return new SubscriptionResource($subscription);
     }
@@ -54,6 +63,10 @@ class SubscriptionController extends Controller
 
     public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
     {
+        $user = Auth::user();
+
+        $this->auditLogService->storeAction('update', 'subscriptions', $subscription->id, $user->id);
+
         $subscription->update($request->all());
     }
 
@@ -62,7 +75,11 @@ class SubscriptionController extends Controller
     {
         try 
         {
+            $user = Auth::user();
+
             $subscription->delete();
+
+            $this->auditLogService->storeAction('delete', 'subscriptions', $subscription->id, $user->id);
 
             return response()->json(['message' => 'Subscription deleted successfully'], 200);
         }

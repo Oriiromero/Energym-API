@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Services\AuditLogService;
 
 class RegisteredUserController extends Controller
 {
@@ -19,8 +20,17 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
+     public $auditLogService;
+
+    public function __construct(AuditLogService $auditLogService)
+    {
+        $this->auditLogService = $auditLogService;
+    }
     public function store(Request $request): JsonResponse
     {
+        $admin = Auth::user();
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -48,6 +58,8 @@ class RegisteredUserController extends Controller
 
         // Auth::login($user);
         $token = $user->createToken('api-token');
+
+        $this->auditLogService->storeAction('store', 'users', $user->id, $admin->id);
 
         return response()->json([
             'user' => $user,
